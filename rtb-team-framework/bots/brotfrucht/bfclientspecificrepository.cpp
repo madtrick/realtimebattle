@@ -34,6 +34,9 @@
 #include <string>
 #include <errno.h>
 #include <string.h>
+#include <time.h>
+#include <mach/clock.h>
+#include <mach/mach.h>
 #include "../../rtbglobal/masterresourcecontrol.h"
 
 namespace Brotfrucht {
@@ -80,8 +83,17 @@ namespace Brotfrucht {
 			* (Re)Start the timer with the current systemtime
 			*/
 			void BFClientSpecificRepository::startTimer() throw(StrategyException) {
-				if (clock_gettime(CLOCK_REALTIME,&_timerstart))
-					throw StrategyException(string("Setting the timer for a new shoot failed in Brotfrucht strategy: ")+strerror(errno));
+        // Code found aa: http://stackoverflow.com/questions/5167269/clock-gettime-alternative-in-mac-os-x
+        clock_serv_t cclock;
+        mach_timespec_t mts;
+        host_get_clock_service(mach_host_self(), REALTIME_CLOCK, &cclock);
+        clock_get_time(cclock, &mts);
+        mach_port_deallocate(mach_task_self(), cclock);
+        _timerstart.tv_sec = mts.tv_sec;
+        _timerstart.tv_nsec = mts.tv_nsec;
+
+				//if (clock_gettime(CLOCK_REALTIME,&_timerstart))
+				//  throw StrategyException(string("Setting the timer for a new shoot failed in Brotfrucht strategy: ")+strerror(errno));
 			}
 			
 			/**
@@ -89,8 +101,17 @@ namespace Brotfrucht {
 			 */ 
 			double BFClientSpecificRepository::getTimePassed() const throw(StrategyException) {
 				timespec dummy;
-				if (clock_gettime(CLOCK_REALTIME,&dummy))
-					throw StrategyException(string("Getting the passed time for a new shoot failed in Brotfrucht strategy: ")+strerror(errno));
+
+        clock_serv_t cclock;
+        mach_timespec_t mts;
+        host_get_clock_service(mach_host_self(), REALTIME_CLOCK, &cclock);
+        clock_get_time(cclock, &mts);
+        mach_port_deallocate(mach_task_self(), cclock);
+        dummy.tv_sec = mts.tv_sec;
+        dummy.tv_nsec = mts.tv_nsec;
+
+				//if (clock_gettime(CLOCK_REALTIME,&dummy))
+				//  throw StrategyException(string("Getting the passed time for a new shoot failed in Brotfrucht strategy: ")+strerror(errno));
 				return double(1000000000.0)*(dummy.tv_sec-_timerstart.tv_sec)+dummy.tv_nsec-_timerstart.tv_nsec;
 			}
 			

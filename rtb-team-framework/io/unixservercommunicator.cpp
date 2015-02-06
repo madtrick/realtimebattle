@@ -39,6 +39,7 @@
 #include "../exceptions/confignotloadedexception.h"
 #include "../rtbglobal/masterresourcecontrol.h"
 
+#include <unistd.h>
 #include <ios>
 #include <fcntl.h>
 #include <sys/types.h>

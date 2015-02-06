@@ -38,6 +38,7 @@
 #include "../rtbglobal/masterresourcecontrol.h"
 #include "../exceptions/keynotfoundexception.h"
 #include "../exceptions/confignotloadedexception.h"
+#include <unistd.h>
 #include <sstream>
 #include <errno.h>
 #include <string.h>

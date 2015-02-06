@@ -29,8 +29,4 @@
 **************************************************************************/
 
 #include <iosfwd>	// This file contains the forward declaration in particular of std::string
-
-namespace std
-{
-	template <class _Tp> class auto_ptr;	// Origin: The header file <memory>
-}
+#include <memory>

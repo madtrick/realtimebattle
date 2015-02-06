@@ -35,6 +35,7 @@
 #include <common.h>
 
 #include "unixoutstreambuf.h"
+#include <unistd.h>
 #include <sstream>
 #include <errno.h>
 #include <string.h>

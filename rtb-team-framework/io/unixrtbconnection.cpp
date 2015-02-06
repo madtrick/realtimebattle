@@ -33,6 +33,7 @@
 #include "unixrtbconnection.h"
 #include "../exceptions/keynotfoundexception.h"
 #include "../rtbglobal/masterresourcecontrol.h"
+#include <unistd.h>
 #include <iostream>
 #include <sstream>
 #include <ios>

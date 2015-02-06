@@ -35,6 +35,7 @@
 #include "../rtbglobal/masterresourcecontrol.h"
 
 //STL
+#include <unistd.h>
 #include <sstream>
 #include <ios>
 
